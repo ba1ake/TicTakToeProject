@@ -1,7 +1,7 @@
 //Start of functions used for the game
 
 
-function populateBoard(start) { // used to allow a preplayed board to be "loaded" into the game for test cases
+const populateBoard = (start) => { // used to allow a preplayed board to be "loaded" into the game for test cases
     if (start) { // if true, game will use the preplayed board
         return(start);
     } else; { // if the board is empty, or some form of error occurs the game will start from a fresh board
@@ -9,31 +9,33 @@ function populateBoard(start) { // used to allow a preplayed board to be "loaded
     }
 }
 
-function displayBoard(board) { // prints the board in the console in a readable font, while also displaying columns and rows for the players to use for input
+const displayBoard = (board) => { // prints the board in the console in a readable font, while also displaying columns and rows for the players to use for input
     console.log("   --1---2---3-")
     cords = ["A:","B:","C:"]
     for (i in board) {
-        console.log(cords[i] + (" | ") + board[i].join(" | ")); // this combines line by line the board into a string for the console to print, also includes spacing and the row letters
+        //console.log(cords[i] + (" | ") + board[i].join(" | ")); // this combines line by line the board into a string for the console to print, also includes spacing and the row letters
+        console.log(`${cords[i]} | ${board[i].join(' | ')}`); // this combines line by line the board into a string for the console to print, also includes spacing and the row letters
         console.log("   ------------")
     }
 
 }
-function boardConvert(board) { // this will convert the board into numbers for the game to use to claculate the win
+const boardConvert = (board) => { // this will convert the board into numbers for the game to use to claculate the win
+    boardConverted = [[0,0,0],[0,0,0],[0,0,0]]; // this will create a new board to be used for the game to check for a win
     for (i in board) {
         for (x in board[i]) {
-            if (board[i][x] == "X")  // player 1 is X and is given a value of 1
-                board[i][x] = 1;
-            else if (board[i][x] == "O") //player 2 is O and is given a value of 10
-                board[i][x] = 10;
-            else if (board[i][x] == 0) // spaces kep the value of 0
-                board[i][x] = 0;
+            if (board[i][x] === "X")  // player 1 is X and is given a value of 1
+                boardConverted[i][x] = 1;
+            else if (board[i][x] === "O") //player 2 is O and is given a value of 10
+                boardConverted[i][x] = 10;
+            else if (board[i][x] === 0) // spaces kep the value of 0
+                boardConverted[i][x] = 0;
             
         }
     }
-    return board;
+    return boardConverted;
 }
 
-function checkState(board) {
+const checkState = (board) => {
     board = boardConvert(board); // this will convert the board into numbers for the game to use to claculate the win
     requiredChecks = [ // these are all the possible rows, columns and diagonals that can be uesr to check for a win, these are all assigned a value of 0, 1 or 10 depending on the player
         [board[0][0], board[0][1], board[0][2]], // row 1
@@ -60,15 +62,72 @@ function checkState(board) {
     }
 }
 
-//NOTE - this functions converts the tics or tacs into numbers, which then are summed up to check for a win, rahter than checking each row of the array and checking if either X or O. 
-// means for each row only 1 comparison is needed, rather than 3. 
+const getPLayerMove = () => { // this wil randomise the input for the player 
+    let row = Math.floor(Math.random() * 3);
+    let col = Math.floor(Math.random() * 3);
+    return [row, col];
+}
+
+
+// this function takes the current board, and the players move, checks if the move is valid, and if it is it will return true for another function to place the move on the board
+const checkPlayerMove = (board, move) => { // this will check if the move is valid, and if it is, it will place the players move on the board
+    if (board[move[0]][move[1]] != 0) { // this checks if the space is already taken, if value is zero it is empty, if not it is taken
+        //console.log("Space already taken")
+        return false;
+    } else { 
+        return true; // this returns true to show that the move was valid and ready to be placed on the board
+    }
+}
+
+const placeMove = (player, move, board) => { // once the move is apporved byt CheckPlayerMove, this will place the move on the board depending on the player
+    if (player == 1) { 
+        board[move[0]][move[1]] = "X"; 
+    } else if (player == 2) { 
+        board[move[0]][move[1]] = "O"; 
+    }
+    return board; // this returns the updated board to be used in the game
+
+}
+const turn = (player, gameState)  =>{
+    let playerMove = getPLayerMove()
+    if (checkPlayerMove(gameState, playerMove) && placeMove(player, playerMove, gameState)) {
+        return true;
+    }
+    else { 
+        return false; // this returns false to show that the move was invalid and not placed on the board
+    }
+}
 
 
 // Logic Start for game //
 //[[0,0,0],[0,0,0],[0,0,0]]
 
+board = false
+player = 1
+turns = 0
+//board = [[0,0,"O"],[0,0,"O"],[0,0,"O"]]
 
-board = [[0,0,"X"],[0,0,"X"],[0,0,"X"]]
 let gameState = populateBoard(board) // this will start the game with a fresh board
-displayBoard(gameState)
-checkState(gameState) // this will check the board for a win or draw
+
+ while (true) {
+    if (turn(player, gameState)) { // this will check if the move was valid and place it on the board
+        displayBoard(gameState) // updates display
+        player = player == 1 ? 2 : 1; // this will switch the player from 1 to 2 or 2 to 1
+        turns += 1;
+
+    }
+    if (checkState(gameState)) { // this will check the board for a win
+        console.log("Game Over")
+        break; // this will end the game if there is a winner
+    }
+    else if (turns == 9) {
+        console.log("Game Over, Tie")
+        break; // this will end the game if there is a tie
+    }
+    
+ }
+
+
+//displayBoard(gameState) // updates display
+
+//checkState(gameState) // this will check the board for a win

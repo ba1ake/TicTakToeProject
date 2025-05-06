@@ -58,12 +58,7 @@ const getPLayerMove = () => { // this wil randomise the input for the player
 
 // this function takes the current board, and the players move, checks if the move is valid, and if it is it will return true for another function to place the move on the board
 const checkPlayerMove = (board, move) => { // this will check if the move is valid, and if it is, it will place the players move on the board
-    if (board[move[0]][move[1]] != 0) { // this checks if the space is already taken, if value is zero it is empty, if not it is taken
-        //console.log("Space already taken")
-        return false;
-    } else { 
-        return true; // this returns true to show that the move was valid and ready to be placed on the board
-    }
+    return (board[move[0]][move[1]] != 0 ? false : true)
 }
 
 const placeMove = (player, move, board) => { // once the move is apporved byt CheckPlayerMove, this will place the move on the board depending on the player
@@ -72,8 +67,9 @@ const placeMove = (player, move, board) => { // once the move is apporved byt Ch
 }
 
 const turn = (player, gameState)  =>{
-    let playerMove = getPLayerMove()
-    return(checkPlayerMove(gameState, playerMove) && placeMove(player, playerMove, gameState)) ? true : false
+    let playerMove = getPLayerMove() // makes random move
+    return(checkPlayerMove(gameState, playerMove) && placeMove(player, playerMove, gameState)) ? true : false 
+    // if the move is free (checkMove) then Place move will excute, will then return true for loop to continue
 }
 
 // Game Logic
@@ -96,6 +92,5 @@ let gameState = populateBoard(board) // this will start the game with a fresh bo
     else if (turns == 9) {
         console.log("Game Over, Tie")
         break; // this will end the game if there is a tie
-    }
-    
+    } 
  }

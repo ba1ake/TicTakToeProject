@@ -17,7 +17,7 @@ const boardConvert = (board) => { // this will convert the board into numbers fo
     boardConverted = [[0,0,0],[0,0,0],[0,0,0]]; // this will create a new board to be used for the game to check for a win
     for (i in board) {
         for (x in board[i]) {
-            boardConverted[i][x] = (board[1][x] === "X" ? 1 : board[1][x] == "O" ? 10 : 0)   
+            boardConverted[i][x] = board[i][x] === "X" ? 1 : board[i][x] === "O" ? 10 : 0;
         }
     }
     return boardConverted;
@@ -51,8 +51,9 @@ const checkState = (board) => {
 }
 
 const getPLayerMove = () => { // this wil randomise the input for the player 
-    let row = Math.floor(Math.random() * 3); let col = Math.floor(Math.random() * 3);
-    return [row, col]; // returns the data as an array so it is easy to plug into coordernates
+    let row = Math.floor(Math.random() * 3);
+    let col = Math.floor(Math.random() * 3);
+    return [row, col];
 }
 
 // this function takes the current board, and the players move, checks if the move is valid, and if it is it will return true for another function to place the move on the board
@@ -66,7 +67,6 @@ const checkPlayerMove = (board, move) => { // this will check if the move is val
 }
 
 const placeMove = (player, move, board) => { // once the move is apporved byt CheckPlayerMove, this will place the move on the board depending on the player
-    board[move[0][1]] = (player === 1 ? "X" : "O")
     if (player == 1) { 
         board[move[0]][move[1]] = "X"; 
     } else if (player == 2) { 

@@ -67,11 +67,7 @@ const checkPlayerMove = (board, move) => { // this will check if the move is val
 }
 
 const placeMove = (player, move, board) => { // once the move is apporved byt CheckPlayerMove, this will place the move on the board depending on the player
-    if (player == 1) { 
-        board[move[0]][move[1]] = "X"; 
-    } else if (player == 2) { 
-        board[move[0]][move[1]] = "O"; 
-    }
+    board[move[0]][move[1]] = player === 1 ? "X" : "O"
     return board; // this returns the updated board to be used in the game
 }
 

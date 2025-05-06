@@ -79,9 +79,10 @@ let gameState = populateBoard(board); // this will start the game with a fresh b
 
  while (true) {
     if (turn(player, gameState)) { // this will check if the move was valid and place it on the board
+        turns += 1;
+        console.log(turns)
         displayBoard(gameState); // updates display
         player = player == 1 ? 2 : 1; // this will switch the player from 1 to 2 or 2 to 1
-        turns += 1;
     }
     if (checkState(gameState)) { // this will check the board for a win
         console.log("Game Over");

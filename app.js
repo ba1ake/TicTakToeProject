@@ -51,9 +51,8 @@ const checkState = (board) => {
 }
 
 const getPLayerMove = () => { // this wil randomise the input for the player 
-    let row = Math.floor(Math.random() * 3);
-    let col = Math.floor(Math.random() * 3);
-    return [row, col];
+    let row = Math.floor(Math.random() * 3); let col = Math.floor(Math.random() * 3);
+    return [row, col]; // returns the data as an array so it is easy to plug into coordernates
 }
 
 // this function takes the current board, and the players move, checks if the move is valid, and if it is it will return true for another function to place the move on the board
@@ -67,6 +66,7 @@ const checkPlayerMove = (board, move) => { // this will check if the move is val
 }
 
 const placeMove = (player, move, board) => { // once the move is apporved byt CheckPlayerMove, this will place the move on the board depending on the player
+    board[move[0][1]] = (player === 1 ? "X" : "O")
     if (player == 1) { 
         board[move[0]][move[1]] = "X"; 
     } else if (player == 2) { 

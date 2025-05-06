@@ -44,7 +44,7 @@ const checkState = (board) => {
             return true; // true if there is a winner, false if there isnt
         } else if (value == 30) { // this checks if player 2 has won
             console.log("Player 2 has won!");
-            return true; // true if there is a winner, flase if there isnt 
+            return true; // true if there is a winner, false if there isnt 
         } 
     }
 }

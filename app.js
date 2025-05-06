@@ -1,10 +1,6 @@
 //Start of functions used for the game
 const populateBoard = (start) => { // used to allow a preplayed board to be "loaded" into the game for test cases
-    if (start) { // if true, game will use the preplayed board
-        return(start);
-    } else; { // if the board is empty, or some form of error occurs the game will start from a fresh board
-        return([[0,0,0],[0,0,0],[0,0,0]]);
-    }
+    return (start ? start : [[0,0,0],[0,0,0],[0,0,0]])
 }
 
 const displayBoard = (board) => { // prints the board in the console in a readable font, while also displaying columns and rows for the players to use for input
@@ -21,12 +17,7 @@ const boardConvert = (board) => { // this will convert the board into numbers fo
     boardConverted = [[0,0,0],[0,0,0],[0,0,0]]; // this will create a new board to be used for the game to check for a win
     for (i in board) {
         for (x in board[i]) {
-            if (board[i][x] === "X")  // player 1 is X and is given a value of 1
-                boardConverted[i][x] = 1;
-            else if (board[i][x] === "O") //player 2 is O and is given a value of 10
-                boardConverted[i][x] = 10;
-            else if (board[i][x] === 0) // spaces kep the value of 0
-                boardConverted[i][x] = 0;       
+            boardConverted[i][x] = (board[1][x] === "X" ? 1 : board[1][x] == "O" ? 10 : 0)   
         }
     }
     return boardConverted;
@@ -86,12 +77,7 @@ const placeMove = (player, move, board) => { // once the move is apporved byt Ch
 
 const turn = (player, gameState)  =>{
     let playerMove = getPLayerMove()
-    if (checkPlayerMove(gameState, playerMove) && placeMove(player, playerMove, gameState)) {
-        return true;
-    }
-    else { 
-        return false; // this returns false to show that the move was invalid and not placed on the board
-    }
+    return(checkPlayerMove(gameState, playerMove) && placeMove(player, playerMove, gameState)) ? true : false
 }
 
 // Game Logic
@@ -117,10 +103,3 @@ let gameState = populateBoard(board) // this will start the game with a fresh bo
     }
     
  }
-
-
-//displayBoard(gameState) // updates display
-
-//checkState(gameState) // this will check the board for a win
-
-
